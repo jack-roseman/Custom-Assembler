@@ -414,24 +414,33 @@ int power(int base, int exponent){
 }
 
 int write_obj_file(char* filename, unsigned short int program_bin[ROWS]) {
-    int i;
-    int len = strlen(filename);
-    int prog_len = 0;
-    char objfilename[len];
     FILE* file;
-    memcpy(objfilename, filename, strlen(filename));
-    objfilename[len - 3] = 'o';
-    objfilename[len - 2] = 'b';
-    objfilename[len - 1] = 'j';
-    objfilename[len] = '\0';
-    file = fopen(objfilename, "wb");
-    while (program_bin[prog_len] != '\0') {
-        prog_len++;
+    int* prog_len;
+    unsigned short int* header;
+    unsigned short int* addr;
+    filename[strlen(filename) - 3] = 'o';
+    filename[strlen(filename) - 2] = 'b';
+    filename[strlen(filename) - 1] = 'j';
+    filename[strlen(filename)] = '\0';
+    file = fopen(filename, "wb");
+    *header = 0xCADE;
+    *addr = 0x0000;
+    *prog_len = 0;
+    if (fwrite(header, sizeof(unsigned short int), 1, file) != 1) {
+        return 7;
     }
-    for (i = 0; i < strlen((char*) program_bin); i++) {
-        fwrite(program_bin[i], 2, strlen(program_bin[i]), file);  
+    if (fwrite(addr, sizeof(unsigned short int), 1, file) != 1) {
+        return 7;
     }
-    fclose(objfilename);
-    
+    while (program_bin[*prog_len] != 0) {
+        (*prog_len)++;
+    }
+    if (fwrite(prog_len, sizeof(unsigned short int), 1, file) != 1) {
+        return 7;
+    }
+    if (fwrite(program_bin, sizeof(unsigned short int), prog_len, file) != *prog_len) {
+        return 7;
+    }
+    fclose(file);
 	return 0;
 }
