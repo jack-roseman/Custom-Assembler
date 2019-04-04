@@ -40,40 +40,40 @@ int parse_instruction(char* instr, char* instr_bin_str) {
 	token = strtok(instruction, space_delim);
 	if (strncmp(token, "ADD", 4) == 0) {
 		if (parse_add(instr, instr_bin_str) == 4) {
-			printf(" error4: parse_add() failed.\n");
-			return 3;
+			printf("error4: parse_add() failed.\n");
+			return 4;
 		}
 	} else if (strncmp(token, "SUB", 4) == 0) {
 		if (parse_sub(instr, instr_bin_str) == 4) {
-			printf(" error4: parse_sub() failed.\n");
-			return 3;
+			printf("error4: parse_sub() failed.\n");
+			return 4;
 		}
 	} else if (strncmp(token, "MUL", 4) == 0) {
 		if (parse_mul(instr, instr_bin_str) == 4) {
-			printf(" error4: parse_mul() failed.\n");
-			return 3;
+			printf("error4: parse_mul() failed.\n");
+			return 4;
 		}
 	} else if (strncmp(token, "DIV", 4) == 0) {
 		if (parse_div(instr, instr_bin_str) == 4) {
-			printf(" error4: parse_div() failed.\n");
-			return 3;
+			printf("error4: parse_div() failed.\n");
+			return 4;
 		}
 	} else if (strncmp(token, "AND", 4) == 0) {
 		if (parse_and(instr, instr_bin_str) == 4) {
-			printf(" error4: parse_and() failed.\n");
-			return 3;
+			printf("error4: parse_and() failed.\n");
+			return 4;
 		}
 	} else if (strncmp(token, "OR", 3) == 0) {
 		if (parse_or(instr, instr_bin_str) == 4) {
-			printf(" error4: parse_or() failed.\n");
-			return 3;
+			printf("error4: parse_or() failed.\n");
+			return 4;
 		}
 	} else if(strncmp(token, "XOR", 4) == 0) {
 		if (parse_xor(instr, instr_bin_str) == 4) {
-			printf(" error4: parse_xor() failed.\n");
-			return 3;
+			printf("error4: parse_xor() failed.\n");
+			return 4;
 		}
-	}
+	} 
 	return 0;
 }
 
@@ -120,6 +120,7 @@ int parse_reg(char reg_num, char* instr_bin_str) {
 			instr_bin_str[i]   = '1';
 			instr_bin_str[i+1] = '1';
 			instr_bin_str[i+2] = '1';
+            break;
 		default:
 			printf("error5: parse_reg() failed.\n");
 			return 5;
@@ -132,19 +133,16 @@ int parse_add(char* instr, char* instr_bin_str ){
 	char* token; 
     char r;
 	int i = 0;
-	const char space_delim[2] = " ";
-	const char null_delim[1] = "";
-	const char comma_delim[2] = ", ";
-	token = strtok(instr, space_delim);          //skip command
+	token = strtok(instr, " ");                  //skip command
     instr = instr + strlen(token) + 1;           //go to next token
-    token = strtok(NULL, comma_delim);
+    token = strtok(NULL, ", ");
 	while (token != NULL) {
         sscanf(token, "R%c", &r);
 		registers[i] = '\0' + r;
 		if (i == 2) {
-			token = strtok(NULL, null_delim);
+			token = strtok(NULL, "");
 		} else{
-			token = strtok(NULL, comma_delim);
+			token = strtok(NULL, ", ");
 		}
 		i++;
 	}
@@ -170,19 +168,16 @@ int parse_sub(char* instr, char* instr_bin_str ) {
 	char* token; 
     char r;
 	int i = 0;
-	const char space_delim[2] = " ";
-	const char null_delim[1] = "";
-	const char comma_delim[2] = ", ";
-	token = strtok(instr, space_delim);          //skip command
+	token = strtok(instr, " ");          //skip command
     instr = instr + strlen(token) + 1;           //go to next token
-    token = strtok(NULL, comma_delim);
+    token = strtok(NULL, ", ");
 	while (token != NULL) {
         sscanf(token, "R%c", &r);
 		registers[i] = '\0' + r;
 		if (i == 2) {
-			token = strtok(NULL, null_delim);
+			token = strtok(NULL, "");
 		} else{
-			token = strtok(NULL, comma_delim);
+			token = strtok(NULL, ", ");
 		}
 		i++;
 	}
@@ -208,19 +203,16 @@ int parse_mul(char* instr, char* instr_bin_str ) {
 	char* token; 
     char r;
 	int i = 0;
-	const char space_delim[2] = " ";
-	const char null_delim[1] = "";
-	const char comma_delim[2] = ", ";
-	token = strtok(instr, space_delim);          //skip command
+	token = strtok(instr, " ");          //skip command
     instr = instr + strlen(token) + 1;           //go to next token
-    token = strtok(NULL, comma_delim);
+    token = strtok(NULL, ", ");
 	while (token != NULL) {
         sscanf(token, "R%c", &r);
 		registers[i] = '\0' + r;
 		if (i == 2) {
-			token = strtok(NULL, null_delim);
+			token = strtok(NULL, "");
 		} else{
-			token = strtok(NULL, comma_delim);
+			token = strtok(NULL, ", ");
 		}
 		i++;
 	}
@@ -246,19 +238,16 @@ int parse_div(char* instr, char* instr_bin_str ) {
 	char* token; 
     char r;
 	int i = 0;
-	const char space_delim[2] = " ";
-	const char null_delim[1] = "";
-	const char comma_delim[2] = ", ";
-	token = strtok(instr, space_delim);          //skip command
+	token = strtok(instr, " ");          //skip command
     instr = instr + strlen(token) + 1;           //go to next token
-    token = strtok(NULL, comma_delim);
+    token = strtok(NULL, ", ");
 	while (token != NULL) {
         sscanf(token, "R%c", &r);
 		registers[i] = '\0' + r;
 		if (i == 2) {
-			token = strtok(NULL, null_delim);
+			token = strtok(NULL, "");
 		} else{
-			token = strtok(NULL, comma_delim);
+			token = strtok(NULL, ", ");
 		}
 		i++;
 	}
@@ -284,19 +273,16 @@ int parse_and(char* instr, char* instr_bin_str ) {
 	char* token; 
     char r;
 	int i = 0;
-	const char space_delim[2] = " ";
-	const char null_delim[1] = "";
-	const char comma_delim[2] = ", ";
-	token = strtok(instr, space_delim);          //skip command
+	token = strtok(instr, " ");          //skip command
     instr = instr + strlen(token) + 1;           //go to next token
-    token = strtok(NULL, comma_delim);
+    token = strtok(NULL, ", ");
 	while (token != NULL) {
         sscanf(token, "R%c", &r);
 		registers[i] = '\0' + r;
 		if (i == 2) {
-			token = strtok(NULL, null_delim);
+			token = strtok(NULL, "");
 		} else{
-			token = strtok(NULL, comma_delim);
+			token = strtok(NULL, ", ");
 		}
 		i++;
 	}
@@ -322,19 +308,16 @@ int parse_or(char* instr, char* instr_bin_str ) {
 	char* token; 
     char r;
 	int i = 0;
-	const char space_delim[2] = " ";
-	const char null_delim[1] = "";
-	const char comma_delim[2] = ", ";
-	token = strtok(instr, space_delim);          //skip command
+	token = strtok(instr, " ");          //skip command
     instr = instr + strlen(token) + 1;           //go to next token
-    token = strtok(NULL, comma_delim);
+    token = strtok(NULL, ", ");
 	while (token != NULL) {
         sscanf(token, "R%c", &r);
 		registers[i] = '\0' + r;
 		if (i == 2) {
-			token = strtok(NULL, null_delim);
+			token = strtok(NULL, "");
 		} else{
-			token = strtok(NULL, comma_delim);
+			token = strtok(NULL, ", ");
 		}
 		i++;
 	}
@@ -360,19 +343,16 @@ int parse_xor(char* instr, char* instr_bin_str ) {
 	char* token; 
     char r;
 	int i = 0;
-	const char space_delim[2] = " ";
-	const char null_delim[1] = "";
-	const char comma_delim[2] = ", ";
-	token = strtok(instr, space_delim);          //skip command
+	token = strtok(instr, " ");          //skip command
     instr = instr + strlen(token) + 1;           //go to next token
-    token = strtok(NULL, comma_delim);
+    token = strtok(NULL, ", ");
 	while (token != NULL) {
         sscanf(token, "R%c", &r);
 		registers[i] = '\0' + r;
 		if (i == 2) {
-			token = strtok(NULL, null_delim);
+			token = strtok(NULL, "");
 		} else{
-			token = strtok(NULL, comma_delim);
+			token = strtok(NULL, ", ");
 		}
 		i++;
 	}
@@ -420,6 +400,7 @@ int write_obj_file(char* filename, unsigned short int program_bin[ROWS]) {
     unsigned short int n = 0;
     unsigned short int header[1];
     unsigned short int addr[1];
+    //change file extension to ".obj"
     filename[strlen(filename) - 3] = 'o';
     filename[strlen(filename) - 2] = 'b';
     filename[strlen(filename) - 1] = 'j';
