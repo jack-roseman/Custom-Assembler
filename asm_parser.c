@@ -415,30 +415,40 @@ int power(int base, int exponent){
 
 int write_obj_file(char* filename, unsigned short int program_bin[ROWS]) {
     FILE* file;
-    int* prog_len;
-    unsigned short int* header;
-    unsigned short int* addr;
+    int i;
+    unsigned short int prog_len = 0;
+    unsigned short int n = 0;
+    unsigned short int header[1];
+    unsigned short int addr[1];
     filename[strlen(filename) - 3] = 'o';
     filename[strlen(filename) - 2] = 'b';
     filename[strlen(filename) - 1] = 'j';
     filename[strlen(filename)] = '\0';
     file = fopen(filename, "wb");
-    *header = 0xCADE;
+    if (file == NULL) {
+        return 7;
+    }
+    *header = 0xDECA;
     *addr = 0x0000;
-    *prog_len = 0;
     if (fwrite(header, sizeof(unsigned short int), 1, file) != 1) {
         return 7;
     }
     if (fwrite(addr, sizeof(unsigned short int), 1, file) != 1) {
         return 7;
     }
-    while (program_bin[*prog_len] != 0) {
-        (*prog_len)++;
+    while (program_bin[prog_len] != 0) {
+        prog_len++;
     }
-    if (fwrite(prog_len, sizeof(unsigned short int), 1, file) != 1) {
+    //fix endianness
+    n = (((prog_len >> 8) & 0x00ff) | ((prog_len << 8) & 0xff00));
+    for(i = 0; i < prog_len; i++){
+        program_bin[i] = (((program_bin[i] >> 8) & 0x00ff) | ((program_bin[i] << 8) & 0xff00));
+        printf("0x%X\n", program_bin[i]); 
+    }
+    if (fwrite(&n, sizeof(unsigned short int), 1, file) != 1) {
         return 7;
     }
-    if (fwrite(program_bin, sizeof(unsigned short int), prog_len, file) != *prog_len) {
+    if (fwrite(program_bin, sizeof(unsigned short int), prog_len, file) != prog_len) {
         return 7;
     }
     fclose(file);
