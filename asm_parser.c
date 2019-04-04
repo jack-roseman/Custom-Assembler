@@ -26,7 +26,6 @@ int read_asm_file(char* filename, char program[ROWS][COLS]) {
 			i++;
 			continue;
 		}
-		line[strlen(line) - 1] = '\0';    //replace new line with null
 		memcpy(program[i], line, strlen(line)); 
 		i++;
 	}
@@ -50,17 +49,17 @@ int parse_instruction(char* instr, char* instr_bin_str) {
 			return 3;
 		}
 	} else if (strncmp(token, "MUL", 4) == 0) {
-		if (parse_add(instr, instr_bin_str) == 4) {
+		if (parse_mul(instr, instr_bin_str) == 4) {
 			printf(" error4: parse_mul() failed.\n");
 			return 3;
 		}
 	} else if (strncmp(token, "DIV", 4) == 0) {
-		if (parse_add(instr, instr_bin_str) == 4) {
+		if (parse_div(instr, instr_bin_str) == 4) {
 			printf(" error4: parse_div() failed.\n");
 			return 3;
 		}
 	} else if (strncmp(token, "AND", 4) == 0) {
-		if (parse_add(instr, instr_bin_str) == 4) {
+		if (parse_and(instr, instr_bin_str) == 4) {
 			printf(" error4: parse_and() failed.\n");
 			return 3;
 		}
@@ -70,12 +69,11 @@ int parse_instruction(char* instr, char* instr_bin_str) {
 			return 3;
 		}
 	} else if(strncmp(token, "XOR", 4) == 0) {
-		if (parse_add(instr, instr_bin_str) == 4) {
+		if (parse_xor(instr, instr_bin_str) == 4) {
 			printf(" error4: parse_xor() failed.\n");
 			return 3;
 		}
 	}
-    printf("%s\n", instr_bin_str);
 	return 0;
 }
 
@@ -126,7 +124,6 @@ int parse_reg(char reg_num, char* instr_bin_str) {
 			printf("error5: parse_reg() failed.\n");
 			return 5;
 	}
-    
 	return 0;
 }
 
@@ -236,7 +233,7 @@ int parse_mul(char* instr, char* instr_bin_str ) {
 		printf("error4: parse_mul() failed because parse_reg failed.\n");
 		return 4;
 	}
-	strcpy(instr_bin_str + (sizeof(char) * strlen(instr_bin_str)),"001"); //sub-opcode
+	strcpy(instr_bin_str + (sizeof(char) * strlen(instr_bin_str)), "001"); //sub-opcode
 	if (parse_reg(registers[2], instr_bin_str) == 5) {
 		printf("error4: parse_mul() failed because parse_reg failed.\n");
 		return 4;
@@ -303,7 +300,7 @@ int parse_and(char* instr, char* instr_bin_str ) {
 		}
 		i++;
 	}
-    memcpy(instr_bin_str, "0101", 5); //opcode
+    memcpy(instr_bin_str, "0101", 5);
 	if (parse_reg(registers[0], instr_bin_str) == 5) {
 		printf("error4: parse_and() failed because parse_reg failed.\n");
 		return 4;
@@ -312,7 +309,7 @@ int parse_and(char* instr, char* instr_bin_str ) {
 		printf("error4: parse_and() failed because parse_reg failed.\n");
 		return 4;
 	}
-	strcpy(instr_bin_str + (sizeof(char) * strlen(instr_bin_str)),"000"); //sub-opcode
+	strcpy(instr_bin_str + (sizeof(char) * strlen(instr_bin_str)),"000");
 	if (parse_reg(registers[2], instr_bin_str) == 5) {
 		printf("error4: parse_and() failed because parse_reg failed.\n");
 		return 4;
@@ -379,7 +376,7 @@ int parse_xor(char* instr, char* instr_bin_str ) {
 		}
 		i++;
 	}
-    memcpy(instr_bin_str, "0101", 5); //opcode
+    memcpy(instr_bin_str, "0101", 5);
 	if (parse_reg(registers[0], instr_bin_str) == 5) {
 		printf("error4: parse_xor() failed because parse_reg failed.\n");
 		return 4;
@@ -388,7 +385,7 @@ int parse_xor(char* instr, char* instr_bin_str ) {
 		printf("error4: parse_xor() failed because parse_reg failed.\n");
 		return 4;
 	}
-	strcpy(instr_bin_str + (sizeof(char) * strlen(instr_bin_str)),"011"); //sub-opcode
+	strcpy(instr_bin_str + (sizeof(char) * strlen(instr_bin_str)),"011");
 	if (parse_reg(registers[2], instr_bin_str) == 5) {
 		printf("error4: parse_xor() failed because parse_reg failed.\n");
 		return 4;
@@ -398,10 +395,13 @@ int parse_xor(char* instr, char* instr_bin_str ) {
 
 unsigned short int str_to_bin (char* instr_bin_str) {
     int i;
-    for(i = 0; i < strlen(instr_bin_str); i++){
-        
+    int bin_num = 0;
+    for(i = 0; i < strlen(instr_bin_str); i++) {
+        if (instr_bin_str[i] == '1') {
+            bin_num = bin_num + power(2, 15 - i);
+        }
     }
-	return 0;
+	return bin_num;
 }
 
 int power(int base, int exponent){
@@ -413,6 +413,7 @@ int power(int base, int exponent){
 	return s;
 }
 
-int write_obj_file(char* filename, unsigned short int program_bin[ROWS] ) {
+int write_obj_file(char* filename, unsigned short int program_bin[ROWS]) {
+    
 	return 0;
 }

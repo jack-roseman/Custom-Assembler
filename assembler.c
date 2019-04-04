@@ -48,12 +48,9 @@ int main(int argc, char** argv) {
 		}
 		parse_instruction(program[i], program_bin_str[i]);
 		program_bin[i] = str_to_bin(program_bin_str[i]);
- 		//printf("%s\n", program[i]);
-    }
-    for (int i = 0; i < ROWS; i++) {
-        if (program_bin_str[i][0] != '\0') {
-            printf("%s\n", program_bin_str[i]);
-        }
+ 		printf("%s\n", program_bin_str[i]);
+        printf("0x%X\n", program_bin[i]);
+        printf("\n");
     }
 
 	//if (write_obj_file(filename, program_bin));
