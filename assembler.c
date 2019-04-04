@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 	
     filename = argv[1];
     if (read_asm_file(filename, program) == 2) {
-        printf("error2: read_asm_file() failed");
+        printf("error2: read_asm_file() failed.\n");
         return 0;
     }
     
@@ -48,11 +48,13 @@ int main(int argc, char** argv) {
 		}
 		parse_instruction(program[i], program_bin_str[i]);
 		program_bin[i] = str_to_bin(program_bin_str[i]);
- 		printf("%s\n", program_bin_str[i]);
-        printf("0x%X\n", program_bin[i]);
-        printf("\n");
+//  		printf("%s\n", program_bin_str[i]);
+//         printf("0x%X\n", program_bin[i]);
+//         printf("\n");
     }
 
-	//if (write_obj_file(filename, program_bin));
+	if (write_obj_file(filename, program_bin) == 7) {
+        printf("error7: write_obj_file() failed.\n");
+    }
     return 0;
 }

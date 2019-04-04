@@ -414,6 +414,24 @@ int power(int base, int exponent){
 }
 
 int write_obj_file(char* filename, unsigned short int program_bin[ROWS]) {
+    int i;
+    int len = strlen(filename);
+    int prog_len = 0;
+    char objfilename[len];
+    FILE* file;
+    memcpy(objfilename, filename, strlen(filename));
+    objfilename[len - 3] = 'o';
+    objfilename[len - 2] = 'b';
+    objfilename[len - 1] = 'j';
+    objfilename[len] = '\0';
+    file = fopen(objfilename, "wb");
+    while (program_bin[prog_len] != '\0') {
+        prog_len++;
+    }
+    for (i = 0; i < strlen((char*) program_bin); i++) {
+        fwrite(program_bin[i], 2, strlen(program_bin[i]), file);  
+    }
+    fclose(objfilename);
     
 	return 0;
 }
