@@ -1,2 +1,9 @@
-all : asm_parser.c assembler.c
-	clang -Wall -g -o asm_parser.h asm_parser.c assembler.c -o assembler
+all: main
+main: asm_parser.o assembler.c
+	clang -Wall -g asm_parser.o assembler.c -o assembler
+asm_parser.o: asm_parser.c
+	clang -g -c asm_parser.c
+clean:
+	rm -rf *.o
+clobber: clean
+	rm -rf assembler

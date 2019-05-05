@@ -18,7 +18,6 @@ int read_asm_file(char* filename, char program[ROWS][COLS]) {
 	int i = 0;
 	FILE* file = fopen(filename, "r");
 	if (file == NULL) {
-		printf("error2: read_asm_file() failed.\n");
 		return 2;
 	}
 	while (fgets(line, COLS, file) != NULL) {
@@ -40,38 +39,38 @@ int parse_instruction(char* instr, char* instr_bin_str) {
 	token = strtok(instruction, space_delim);
 	if (strncmp(token, "ADD", 4) == 0) {
 		if (parse_add(instr, instr_bin_str) == 4) {
-			printf("error4: parse_add() failed.\n");
-			return 4;
+			printf("error3: parse_instruction() failed.\n");
+			return 3;
 		}
 	} else if (strncmp(token, "SUB", 4) == 0) {
 		if (parse_sub(instr, instr_bin_str) == 4) {
-			printf("error4: parse_sub() failed.\n");
-			return 4;
+			printf("error3: parse_instruction() failed.\n");
+			return 3;
 		}
 	} else if (strncmp(token, "MUL", 4) == 0) {
 		if (parse_mul(instr, instr_bin_str) == 4) {
-			printf("error4: parse_mul() failed.\n");
-			return 4;
+			printf("error3: parse_instruction() failed.\n");
+			return 3;
 		}
 	} else if (strncmp(token, "DIV", 4) == 0) {
 		if (parse_div(instr, instr_bin_str) == 4) {
-			printf("error4: parse_div() failed.\n");
-			return 4;
+			printf("error3: parse_instruction() failed.\n");
+			return 3;
 		}
 	} else if (strncmp(token, "AND", 4) == 0) {
 		if (parse_and(instr, instr_bin_str) == 4) {
-			printf("error4: parse_and() failed.\n");
-			return 4;
+			printf("error3: parse_instruction() failed.\n");
+			return 3;
 		}
 	} else if (strncmp(token, "OR", 3) == 0) {
 		if (parse_or(instr, instr_bin_str) == 4) {
-			printf("error4: parse_or() failed.\n");
-			return 4;
+			printf("error3: parse_instruction() failed.\n");
+			return 3;
 		}
 	} else if(strncmp(token, "XOR", 4) == 0) {
 		if (parse_xor(instr, instr_bin_str) == 4) {
-			printf("error4: parse_xor() failed.\n");
-			return 4;
+			printf("error3: parse_instruction() failed.\n");
+			return 3;
 		}
 	} 
 	return 0;
@@ -148,16 +147,16 @@ int parse_add(char* instr, char* instr_bin_str ){
 	}
     memcpy(instr_bin_str, "0001", 5); //opcode
 	if (parse_reg(registers[0], instr_bin_str) == 5) {
-		printf("error4: parse_add() failed because parse_reg failed.\n");
+		printf("error4: parse_add() failed.\n");
 		return 4;
 	}
 	if (parse_reg(registers[1], instr_bin_str) == 5) {
-		printf("error4: parse_add() failed because parse_reg failed.\n");
+		printf("error4: parse_add() failed.\n");
 		return 4;
 	}
 	strcpy(instr_bin_str + (sizeof(char) * strlen(instr_bin_str)),"000");  //sub-opcode
 	if (parse_reg(registers[2], instr_bin_str) == 5) {
-		printf("error4: parse_add() failed because parse_reg failed.\n");
+		printf("error4: parse_add() failed.\n");
 		return 4;
 	}
 	return 0;
@@ -424,7 +423,6 @@ int write_obj_file(char* filename, unsigned short int program_bin[ROWS]) {
     n = (((prog_len >> 8) & 0x00ff) | ((prog_len << 8) & 0xff00));
     for(i = 0; i < prog_len; i++){
         program_bin[i] = (((program_bin[i] >> 8) & 0x00ff) | ((program_bin[i] << 8) & 0xff00));
-        printf("0x%X\n", program_bin[i]); 
     }
     if (fwrite(&n, sizeof(unsigned short int), 1, file) != 1) {
         return 7;
